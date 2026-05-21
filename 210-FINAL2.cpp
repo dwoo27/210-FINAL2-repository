@@ -29,7 +29,7 @@ Customer newCustomer(string[], string[]);
 void addCustomer(CoffeeLine&, Customer);
 void displayCoffeeLine(CoffeeLine&);
 bool serveCustomer(CoffeeLine&, Customer&);
-void simCoffee(CoffeeLine&);
+void simCoffee(CoffeeLine&, string[], string[]);
 
 
 int main()
@@ -67,7 +67,7 @@ int main()
 		addCustomer(coffeeLine, newCustomer(names, drinks));
 	}
 
-	displayCoffeeLine(coffeeLine);
+	simCoffee(coffeeLine, names, drinks);
 
 
 
@@ -137,7 +137,7 @@ bool serveCustomer(CoffeeLine& line, Customer& servedCustomer) {
 
 	return true;
 }
-void simCoffee(CoffeeLine& coffeeLine) {
+void simCoffee(CoffeeLine& coffeeLine, string names[], string orders[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
 
@@ -156,6 +156,19 @@ void simCoffee(CoffeeLine& coffeeLine) {
 			cout << "Coffee line is empty" << endl;
 		}
 
+		if (rand() % 2 == 0) {
+			Customer c = newCustomer(names, orders);
+			addCustomer(coffeeLine, c);
+
+			cout << "Joined: " << c.name << ": " << c.order << endl;
+		}
+		else {
+			cout << "No new customers here" << endl;
+
+		}
+
+		cout << "Customers waiting for coffee: " << coffeeLine.count << endl;
+		displayCoffeeLine(coffeeLine);
 
 
 	}
