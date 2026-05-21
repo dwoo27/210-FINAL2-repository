@@ -36,7 +36,7 @@ void displayMuffinLine(deque<Customer>&);
 bool serveCustomer(CoffeeLine&, Customer&);
 bool serveCustomer(deque<Customer>&, Customer&);
 
-void simMarket(CoffeeLine&, string[], string[]);
+void simMarket(CoffeeLine&, deque<Customer>&, string[], string[], string[]);
 
 
 int main()
@@ -91,7 +91,7 @@ int main()
 		addCustomer(muffinLine, newCustomer(names, muffins));
 	}
 
-	simMarket(coffeeLine, names, drinks);
+	simMarket(coffeeLine, muffinLine, names, drinks, muffins);
 
 
 
@@ -195,9 +195,10 @@ bool serveCustomer(deque<Customer>& muffinLine, Customer& servedCustomer) {
 
 }
 
-void simMarket(CoffeeLine& coffeeLine,deque<Customer> muffinLine, string names[], string drinks[], string muffins[]) {
+void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, string names[], string drinks[], string muffins[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
+	displayMuffinLine(muffinLine);
 
 	//copied loop structure and formatting from my SDLC assignment
 	for (int i = 1; i <= PERIODS; i++) {
@@ -216,6 +217,20 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer> muffinLine, string names[]
 			cout << "Coffee line is empty" << endl;
 		}
 
+		if (rand() % 2 == 0) {
+			Customer c = newCustomer(names, drinks);
+			addCustomer(coffeeLine, c);
+
+			cout << "Joined: " << c.name << ": " << c.order << endl;
+		}
+		else {
+			cout << "No new customers here" << endl;
+
+		}
+
+		cout << "Customers waiting for coffee: " << coffeeLine.count << endl;
+		displayCoffeeLine(coffeeLine);
+		cout << endl;
 		//Muffin Booth proccesses
 		cout << "Muffin Booth: " << endl;
 		
@@ -228,8 +243,8 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer> muffinLine, string names[]
 
 
 		if (rand() % 2 == 0) {
-			Customer c = newCustomer(names, drinks);
-			addCustomer(coffeeLine, c);
+			Customer c = newCustomer(names, muffins);
+			addCustomer(muffinLine, c);
 
 			cout << "Joined: " << c.name << ": " << c.order << endl;
 		}
@@ -238,10 +253,11 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer> muffinLine, string names[]
 
 		}
 
+		cout << "Customers waiting for muffins: " << muffinLine.size() << endl;
+		displayMuffinLine(muffinLine);
+		cout << endl;
 
 
-		cout << "Customers waiting for coffee: " << coffeeLine.count << endl;
-		displayCoffeeLine(coffeeLine);
 
 
 	}
