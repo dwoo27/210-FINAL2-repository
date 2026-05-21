@@ -137,15 +137,30 @@ bool serveCustomer(CoffeeLine& line, Customer& servedCustomer) {
 
 	return true;
 }
-void simCoffee(CoffeeLine&) {
+void simCoffee(CoffeeLine& coffeeLine) {
 	cout << "Market Opens" << endl;
+	displayCoffeeLine(coffeeLine);
 
-	//copied loop structure and formatting from my SDLC asignment
+	//copied loop structure and formatting from my SDLC assignment
 	for (int i = 1; i <= PERIODS; i++) {
 		cout << endl << "------------------------" << endl;
 		cout << "Time Period: " << i << endl;
 		cout << "------------------------" << endl;
+
+		cout << "Coffee Booth: " << endl;
+		Customer servedCustomer;
+		if (serveCustomer(coffeeLine, servedCustomer)) {
+			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
+		}
+		else {
+			cout << "Coffee line is empty" << endl;
+		}
+
+
+
 	}
+
+
 }
 
 
