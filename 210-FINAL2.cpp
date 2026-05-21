@@ -29,14 +29,21 @@ Customer newCustomer(string[], string[]);
 //overloaded functions
 void addCustomer(CoffeeLine&, Customer); //coffee
 void addCustomer(deque<Customer>&, Customer); //muffins
+void addCustomer(vector<Customer>&, Customer); //braceelts
+
 
 void displayCoffeeLine(CoffeeLine&);
 void displayMuffinLine(deque<Customer>&);
+void displayBraceletLine(vector<Customer>&);//braceelts
+
 
 bool serveCustomer(CoffeeLine&, Customer&);
 bool serveCustomer(deque<Customer>&, Customer&);
+bool serveCustomer(vector<Customer>&, Customer&);//bracelets
 
-void simMarket(CoffeeLine&, deque<Customer>&, string[], string[], string[]);
+
+void simMarket(CoffeeLine&, deque<Customer>&, vector<Customer>&, 
+	string[], string[], string[], string[]);
 
 
 int main()
@@ -69,6 +76,14 @@ int main()
 	"CoffeeCake", "Smore", "BirthdayCake", "HoneyOat", "Almond"
 	};
 
+	string bracelets[DATA]{
+	"Rainbow", "Blue", "Pink", "Green", "Purple",
+	"Gold", "Silver", "Heart", "Star", "Flower",
+	"Sunset", "Ocean", "Cloud", "Beaded", "Friendship",
+	"Butterfly", "Moon", "Crystal", "Neon", "Pastel",
+	"Charm", "Initials", "Smile", "Peace", "Galaxy"
+	};
+	
 	//ceate new coffeeLine and initialize values to default
 	CoffeeLine coffeeLine;
 	coffeeLine.head = nullptr;
@@ -78,6 +93,8 @@ int main()
 	//create deque for muffinLine
 	deque<Customer> muffinLine;
 
+	//create vector for braceletLine
+	vector<Customer> braceletLine;
 
 	//Milestone 2
 	//initialize and add 3 customers to coffeeLine
@@ -91,7 +108,12 @@ int main()
 		addCustomer(muffinLine, newCustomer(names, muffins));
 	}
 
-	simMarket(coffeeLine, muffinLine, names, drinks, muffins);
+	//Milestone 4
+	for (int i = 0; i < 3; i++) {
+		addCustomer(braceletLine, newCustomer(names, bracelets));
+	}
+
+	simMarket(coffeeLine, muffinLine, braceletLine, names, drinks, muffins, bracelets);
 
 
 
@@ -130,6 +152,11 @@ void addCustomer(deque<Customer>& muffinLine, Customer c) {
 	muffinLine.push_back(c);
 }
 
+//adds customers to braceletLine
+void addCustomer(vector<Customer>& braceletLine, Customer c) {
+	braceletLine.push_back(c);
+}
+
 
 //displays state of coffee line
 void displayCoffeeLine(CoffeeLine& coffeeLine) {
@@ -164,7 +191,23 @@ void displayMuffinLine(deque<Customer>& muffinLine) {
 	}
 }
 
-//serves first customer in coffee line and chance of another customer joining
+//displays state of braceletLine
+void displayBraceletLine(vector<Customer>& braceletLine) {
+	int pos = 1;
+	cout << "Current bracelet line: " << endl;
+	if (braceletLine.empty()) {
+		cout << "Bracelet line is empty." << endl;
+		return;
+	}
+
+	for (const auto& customer : braceletLine) {
+		cout << pos << ". " << customer.name << ": " << customer.order << endl;
+		pos++;
+	}
+}
+
+
+//serves first customer in coffee line 
 bool serveCustomer(CoffeeLine& coffeeLine, Customer& servedCustomer) {
 	if (coffeeLine.head == nullptr) {
 		return false;
@@ -182,7 +225,7 @@ bool serveCustomer(CoffeeLine& coffeeLine, Customer& servedCustomer) {
 	return true;
 }
 
-//serves first customer in muffin line and chance of another customer joining
+//serves first customer in muffin line
 bool serveCustomer(deque<Customer>& muffinLine, Customer& servedCustomer) {
 	if (muffinLine.empty()) {
 		return false;
@@ -195,10 +238,28 @@ bool serveCustomer(deque<Customer>& muffinLine, Customer& servedCustomer) {
 
 }
 
-void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, string names[], string drinks[], string muffins[]) {
+//serves first customer in bracelet line 
+bool serveCustomer(vector<Customer>& braceletLine, Customer& servedCustomer) {
+	if (braceletLine.empty()) {
+		return false;
+	}
+
+	servedCustomer = braceletLine.front();
+	braceletLine.erase(braceletLine.begin());
+
+	return true;
+}
+
+void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Customer>& braceletLine,
+	string names[], string drinks[], string muffins[], string bracelets[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
+	cout << endl;
 	displayMuffinLine(muffinLine);
+	cout << endl;
+	displayBraceletLine(braceletLine);
+	cout << endl;
+
 
 	//copied loop structure and formatting from my SDLC assignment
 	for (int i = 1; i <= PERIODS; i++) {
@@ -208,7 +269,7 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, string names[
 		
 		Customer servedCustomer;
 
-		//Coffee Booth proccesses
+		//Coffee Booth processes
 		cout << "Coffee Booth: " << endl;
 		if (serveCustomer(coffeeLine, servedCustomer)) {
 			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
@@ -231,7 +292,7 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, string names[
 		cout << "Customers waiting for coffee: " << coffeeLine.count << endl;
 		displayCoffeeLine(coffeeLine);
 		cout << endl;
-		//Muffin Booth proccesses
+		//Muffin Booth processes
 		cout << "Muffin Booth: " << endl;
 		
 		if (serveCustomer(muffinLine, servedCustomer)) {
@@ -257,8 +318,31 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, string names[
 		displayMuffinLine(muffinLine);
 		cout << endl;
 
+		//Bracelet Booth processes
+		cout << "Bracelet Booth: " << endl;
+
+		if (serveCustomer(braceletLine, servedCustomer)) {
+			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
+		}
+		else {
+			cout << "Bracelet line is empty" << endl;
+		}
 
 
+		if (rand() % 2 == 0) {
+			Customer c = newCustomer(names, bracelets);
+			addCustomer(braceletLine, c);
+
+			cout << "Joined: " << c.name << ": " << c.order << endl;
+		}
+		else {
+			cout << "No new customers here" << endl;
+
+		}
+
+		cout << "Customers waiting for bracelets: " << braceletLine.size() << endl;
+		displayBraceletLine(braceletLine);
+		cout << endl;
 
 	}
 
