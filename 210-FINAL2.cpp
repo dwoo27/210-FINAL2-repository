@@ -35,7 +35,7 @@ void addCustomer(queue<Customer>&, Customer);//stickers
 void displayCoffeeLine(CoffeeLine&);
 void displayMuffinLine(deque<Customer>&);
 void displayBraceletLine(vector<Customer>&);//bracelets
-void displayStickerLine(queue<Customer>&);//stickers
+void displayStickerLine(queue<Customer>);//stickers
 
 
 bool serveCustomer(CoffeeLine&, Customer&);
@@ -224,7 +224,7 @@ void displayBraceletLine(vector<Customer>& braceletLine) {
 }
 
 //displays state of braceletLine
-void displayStickerLine(vector<Customer>& stickerLine) {
+void displayStickerLine(vector<Customer> stickerLine) {
 	int pos = 1;
 	cout << "Current Sticker line: " << endl;
 	if (stickerLine.empty()) {
@@ -234,8 +234,9 @@ void displayStickerLine(vector<Customer>& stickerLine) {
 
 	while (!stickerLine.empty()) {
 		Customer c = stickerLine.front();
-		cout << pos << ". " << c.name << << ": " << c.order << endl;
-		stick
+		cout << pos << ". " << c.name <<  ": " << c.order << endl;
+		stickerLine.pop();
+		pos++;
 }
 
 
@@ -294,7 +295,7 @@ bool serveCustomer(vector<Customer>& stickerLine, Customer& servedCustomer) {
 	return true;
 }
 
-void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Customer>& braceletLine, queue<Customer>& stickerLine,
+void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Customer>& braceletLine, queue<Customer> stickerLine,
 	string names[], string drinks[], string muffins[], string bracelets[], string stickers[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
@@ -386,6 +387,33 @@ void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Custom
 
 		cout << "Customers waiting for bracelets: " << braceletLine.size() << endl;
 		displayBraceletLine(braceletLine);
+		cout << endl;
+
+
+		//Sticker Booth processes
+		cout << "Sticker Booth: " << endl;
+
+		if (serveCustomer(stickerLine, servedCustomer)) {
+			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
+		}
+		else {
+			cout << "Sticker line is empty" << endl;
+		}
+
+
+		if (rand() % 2 == 0) {
+			Customer c = newCustomer(names, stickers);
+			addCustomer(stickerLine, c);
+
+			cout << "Joined: " << c.name << ": " << c.order << endl;
+		}
+		else {
+			cout << "No new customers here" << endl;
+
+		}
+
+		cout << "Customers waiting for bracelets: " << stickerLine.size() << endl;
+		displayStickerLine(stickerLine);
 		cout << endl;
 
 	}
