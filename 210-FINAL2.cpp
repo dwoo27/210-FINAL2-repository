@@ -29,21 +29,22 @@ Customer newCustomer(string[], string[]);
 //overloaded functions
 void addCustomer(CoffeeLine&, Customer); //coffee
 void addCustomer(deque<Customer>&, Customer); //muffins
-void addCustomer(vector<Customer>&, Customer); //braceelts
-
+void addCustomer(vector<Customer>&, Customer); //bracelets
+void addCustomer(queue<Customer>&, Customer);//stickers
 
 void displayCoffeeLine(CoffeeLine&);
 void displayMuffinLine(deque<Customer>&);
-void displayBraceletLine(vector<Customer>&);//braceelts
+void displayBraceletLine(vector<Customer>&);//bracelets
+void displayStickerLine(queue<Customer>&);//stickers
 
 
 bool serveCustomer(CoffeeLine&, Customer&);
 bool serveCustomer(deque<Customer>&, Customer&);
 bool serveCustomer(vector<Customer>&, Customer&);//bracelets
+bool serveCustomer(queue<Customer>&, Customer&);//stickers
 
-
-void simMarket(CoffeeLine&, deque<Customer>&, vector<Customer>&, 
-	string[], string[], string[], string[]);
+void simMarket(CoffeeLine&, deque<Customer>&, vector<Customer>&, queue<Customer>&,
+	string[], string[], string[], string[], string[]);
 
 
 int main()
@@ -83,6 +84,10 @@ int main()
 	"Butterfly", "Moon", "Crystal", "Neon", "Pastel",
 	"Charm", "Initials", "Smile", "Peace", "Galaxy"
 	};
+
+	string stickers[DATA]{
+
+	};
 	
 	//ceate new coffeeLine and initialize values to default
 	CoffeeLine coffeeLine;
@@ -95,6 +100,9 @@ int main()
 
 	//create vector for braceletLine
 	vector<Customer> braceletLine;
+
+	//create queue for braceletLine
+	queue<Customer> stickerLine;
 
 	//Milestone 2
 	//initialize and add 3 customers to coffeeLine
@@ -113,7 +121,7 @@ int main()
 		addCustomer(braceletLine, newCustomer(names, bracelets));
 	}
 
-	simMarket(coffeeLine, muffinLine, braceletLine, names, drinks, muffins, bracelets);
+	simMarket(coffeeLine, muffinLine, braceletLine, stickerLine, names, drinks, muffins, bracelets, stickers);
 
 
 
@@ -146,6 +154,15 @@ void addCustomer(CoffeeLine& coffeeLine, Customer c) {
 	}
 
 	coffeeLine.count++;
+}
+//adds customers to muffinLine
+void addCustomer(deque<Customer>& muffinLine, Customer c) {
+	muffinLine.push_back(c);
+}
+
+//adds customers to braceletLine
+void addCustomer(vector<Customer>& braceletLine, Customer c) {
+	braceletLine.push_back(c);
 }
 //adds customers to muffinLine
 void addCustomer(deque<Customer>& muffinLine, Customer c) {
@@ -206,6 +223,21 @@ void displayBraceletLine(vector<Customer>& braceletLine) {
 	}
 }
 
+//displays state of braceletLine
+void displayStickerLine(vector<Customer>& stickerLine) {
+	int pos = 1;
+	cout << "Current Sticker line: " << endl;
+	if (stickerLine.empty()) {
+		cout << "Sticker line is empty." << endl;
+		return;
+	}
+
+	while (!stickerLine.empty()) {
+		Customer c = stickerLine.front();
+		cout << pos << ". " << c.name << << ": " << c.order << endl;
+		stick
+}
+
 
 //serves first customer in coffee line 
 bool serveCustomer(CoffeeLine& coffeeLine, Customer& servedCustomer) {
@@ -250,8 +282,20 @@ bool serveCustomer(vector<Customer>& braceletLine, Customer& servedCustomer) {
 	return true;
 }
 
-void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Customer>& braceletLine,
-	string names[], string drinks[], string muffins[], string bracelets[]) {
+//serves first customer in sticker line 
+bool serveCustomer(vector<Customer>& stickerLine, Customer& servedCustomer) {
+	if (stickerLine.empty()) {
+		return false;
+	}
+
+	servedCustomer = stickerLine.front();
+	stickerLine.pop_back();
+
+	return true;
+}
+
+void simMarket(CoffeeLine& coffeeLine,deque<Customer>& muffinLine, vector<Customer>& braceletLine, queue<Customer>& stickerLine,
+	string names[], string drinks[], string muffins[], string bracelets[], string stickers[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
 	cout << endl;
