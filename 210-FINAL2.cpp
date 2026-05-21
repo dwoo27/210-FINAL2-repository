@@ -24,6 +24,9 @@ struct CoffeeLine { //struct for linked list for coffee booth
 	int count;
 };
 
+Customer newCustomer(string[], string[]);
+void addCustomer(CoffeeLine, Customer);
+
 int main()
 {
 	//data generated using LLM
@@ -43,7 +46,42 @@ int main()
 	"RedEye", "Affogato", "IcedAmericano", "HoneyLatte", "PumpkinLatte"
 	};
 
+	//ceate new coffeeline and initialize values to default
 	CoffeeLine coffeeLine;
+	coffeeLine.head = nullptr;
+	coffeeLine.tail = nullptr;
+	coffeeLine.count = 0;
+
+
+
+
+
+
 }
 
+Customer newCustomer(string names[], string drinks[]) {
+	Customer newCustomer;
+
+	newCustomer.name = names[rand() % DATA];
+	newCustomer.order = drinks[rand() % DATA];
+
+	return newCustomer;
+}
+
+void addCustomer(CoffeeLine coffeeLine, Customer c) {
+	Node* node = new Node;
+
+	node.c = c;
+	node.next = nullptr;
+
+	if (coffeeLine.head == nullptr) {
+		coffeeLine.head = node;
+		coffeeLine.tail = node;
+	}
+	else {
+		coffeeLine.tail = node;
+	}
+
+	coffeeLine.count++;
+}
 
