@@ -28,6 +28,9 @@ struct CoffeeLine { //struct for linked list for coffee booth
 Customer newCustomer(string[], string[]);
 void addCustomer(CoffeeLine&, Customer);
 void displayCoffeeLine(CoffeeLine&);
+void simCoffee(CoffeeLine&);
+void serveCustomer(CoffeeLine&, Customer&);
+
 
 int main()
 {
@@ -92,12 +95,13 @@ void addCustomer(CoffeeLine& coffeeLine, Customer c) {
 		coffeeLine.tail = node;
 	}
 	else {
-		coffeeLine.tail = node;
+		coffeeLine.tail->next = node;
+		coffeeLine.tail = node; 
 	}
 
 	coffeeLine.count++;
 }
-
+//displays state of coffee line
 void displayCoffeeLine(CoffeeLine& coffeeLine) {
 	Node* current = coffeeLine.head;
 	int pos = 1;
@@ -116,3 +120,11 @@ void displayCoffeeLine(CoffeeLine& coffeeLine) {
 
 }
 
+
+void simCoffee(CoffeeLine&) {
+
+}
+
+void serveCustomer(CoffeeLine&, Customer&) {
+
+}
