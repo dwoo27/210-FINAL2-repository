@@ -151,37 +151,51 @@ void displayCoffeeLine(CoffeeLine& coffeeLine) {
 }
 //displays state of muffin line
 void displayMuffinLine(deque<Customer>& muffinLine) {
+	int pos = 1;
 	cout << "Current muffin line: " << endl;
 	if (muffinLine.empty()) {
 		cout << "Muffin line is empty." << endl;
 		return;
 	}
 
-	while (current != nullptr) {
-		cout << pos << ". " << current->c.name << ": " << current->c.order << endl;
-		current = current->next;
+	for (const auto& customer : muffinLine) {
+		cout << pos << ". " << customer.name << ": " << customer.order << endl;
 		pos++;
 	}
 }
 
-
-bool serveCustomer(CoffeeLine& line, Customer& servedCustomer) {
-	if (line.head == nullptr) {
+//serves first customer in coffee line and chance of another customer joining
+bool serveCustomer(CoffeeLine& coffeeLine, Customer& servedCustomer) {
+	if (coffeeLine.head == nullptr) {
 		return false;
 	}
-	Node* temp = line.head;
+	Node* temp = coffeeLine.head;
 	servedCustomer = temp->c;
-	line.head = line.head->next;
+	coffeeLine.head = coffeeLine.head->next;
 
-	if (line.head == nullptr) {
-		line.tail = nullptr;
+	if (coffeeLine.head == nullptr) {
+		coffeeLine.tail = nullptr;
 	}
 	delete temp;
-	line.count--;
+	coffeeLine.count--;
 
 	return true;
 }
-void simMarket(CoffeeLine& coffeeLine, string names[], string orders[]) {
+
+//serves first customer in muffin line and chance of another customer joining
+bool serveCustomer(deque<Customer>& muffinLine, Customer& servedCustomer) {
+	if (muffinLine.empty()) {
+		return false;
+	}
+
+	servedCustomer = muffinLine.front();
+	muffinLine.pop_front();
+
+	return true;
+
+}
+
+void simMarket(CoffeeLine& coffeeLine,deque<Customer> muffinLine, string names[], string drinks[], string muffins[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
 
@@ -190,9 +204,11 @@ void simMarket(CoffeeLine& coffeeLine, string names[], string orders[]) {
 		cout << endl << "------------------------" << endl;
 		cout << "Time Period: " << i << endl;
 		cout << "------------------------" << endl;
-
-		cout << "Coffee Booth: " << endl;
+		
 		Customer servedCustomer;
+
+		//Coffee Booth proccesses
+		cout << "Coffee Booth: " << endl;
 		if (serveCustomer(coffeeLine, servedCustomer)) {
 			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
 		}
@@ -200,8 +216,19 @@ void simMarket(CoffeeLine& coffeeLine, string names[], string orders[]) {
 			cout << "Coffee line is empty" << endl;
 		}
 
+		//Muffin Booth proccesses
+		cout << "Muffin Booth: " << endl;
+		
+		if (serveCustomer(muffinLine, servedCustomer)) {
+			cout << "Served: " << servedCustomer.name << ": " << servedCustomer.order << endl;
+		}
+		else {
+			cout << "Muffin line is empty" << endl;
+		}
+
+
 		if (rand() % 2 == 0) {
-			Customer c = newCustomer(names, orders);
+			Customer c = newCustomer(names, drinks);
 			addCustomer(coffeeLine, c);
 
 			cout << "Joined: " << c.name << ": " << c.order << endl;
@@ -210,6 +237,8 @@ void simMarket(CoffeeLine& coffeeLine, string names[], string orders[]) {
 			cout << "No new customers here" << endl;
 
 		}
+
+
 
 		cout << "Customers waiting for coffee: " << coffeeLine.count << endl;
 		displayCoffeeLine(coffeeLine);
