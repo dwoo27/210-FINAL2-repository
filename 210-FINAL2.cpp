@@ -58,21 +58,21 @@ int main()
 
 
 }
-
-Customer newCustomer(string names[], string drinks[]) {
+//general function to create new customer, can be used for all booths
+Customer newCustomer(string names[], string orders[]) {
 	Customer newCustomer;
 
 	newCustomer.name = names[rand() % DATA];
-	newCustomer.order = drinks[rand() % DATA];
+	newCustomer.order = orders[rand() % DATA];
 
 	return newCustomer;
 }
-
+//adds customers to coffeeLine
 void addCustomer(CoffeeLine coffeeLine, Customer c) {
 	Node* node = new Node;
 
-	node.c = c;
-	node.next = nullptr;
+	node->c = c;
+	node->next = nullptr;
 
 	if (coffeeLine.head == nullptr) {
 		coffeeLine.head = node;
