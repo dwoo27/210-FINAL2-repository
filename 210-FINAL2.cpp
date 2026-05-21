@@ -1,3 +1,14 @@
+//code ran before addition of queue and queue functions
+//void addCustomer(queue<Customer>&, Customer);
+//void displayStickerLine(queue<Customer>);
+//bool serveCustomer(queue<Customer>&, Customer&);
+
+//Did not finish, submitting imperfect program
+//this block of comments added after github link submitted only to leave message to Prof. Dietrich
+//no changes to code were made between final push and this one. 
+//Thank you for the semester Prof. Dietrich, have a good summer!
+
+
 #include <iostream>
 #include <string>
 #include <deque> //ds for muffins
