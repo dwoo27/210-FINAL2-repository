@@ -26,10 +26,17 @@ struct CoffeeLine { //struct for linked list for coffee booth
 };
 
 Customer newCustomer(string[], string[]);
-void addCustomer(CoffeeLine&, Customer);
+//overloaded functions
+void addCustomer(CoffeeLine&, Customer); //coffee
+void addCustomer(deque<Customer>&, Customer); //muffins
+
 void displayCoffeeLine(CoffeeLine&);
+void displayMuffinLine(deque<Customer>&);
+
 bool serveCustomer(CoffeeLine&, Customer&);
-void simCoffee(CoffeeLine&, string[], string[]);
+bool serveCustomer(deque<Customer>&, Customer&);
+
+void simMarket(CoffeeLine&, string[], string[]);
 
 
 int main()
@@ -54,11 +61,22 @@ int main()
 	"RedEye", "Affogato", "IcedAmericano", "HoneyLatte", "PumpkinLatte"
 	};
 
-	//ceate new coffeeline and initialize values to default
+	string muffins[DATA] = {
+	"Blueberry", "ChocolateChip", "BananaNut", "Pumpkin", "Lemon",
+	"AppleCinnamon", "DoubleChocolate", "Corn", "Cranberry", "Plain",
+	"Raspberry", "PoppySeed", "Bran", "Strawberry", "CinnamonSugar",
+	"Carrot", "Zucchini", "Peach", "MaplePecan", "OrangeCranberry",
+	"CoffeeCake", "Smore", "BirthdayCake", "HoneyOat", "Almond"
+	};
+
+	//ceate new coffeeLine and initialize values to default
 	CoffeeLine coffeeLine;
 	coffeeLine.head = nullptr;
 	coffeeLine.tail = nullptr;
 	coffeeLine.count = 0;
+
+	//create deque for muffinLine
+	deque<Customer> muffinLine;
 
 
 	//Milestone 2
@@ -67,7 +85,13 @@ int main()
 		addCustomer(coffeeLine, newCustomer(names, drinks));
 	}
 
-	simCoffee(coffeeLine, names, drinks);
+	//Milestone 3
+	//initialize and add 3 customers to muffinLine
+	for (int i = 0; i < 3; i++) {
+		addCustomer(muffinLine, newCustomer(names, muffins));
+	}
+
+	simMarket(coffeeLine, names, drinks);
 
 
 
@@ -101,6 +125,12 @@ void addCustomer(CoffeeLine& coffeeLine, Customer c) {
 
 	coffeeLine.count++;
 }
+//adds customers to muffinLine
+void addCustomer(deque<Customer>& muffinLine, Customer c) {
+	muffinLine.push_back(c);
+}
+
+
 //displays state of coffee line
 void displayCoffeeLine(CoffeeLine& coffeeLine) {
 	Node* current = coffeeLine.head;
@@ -118,6 +148,20 @@ void displayCoffeeLine(CoffeeLine& coffeeLine) {
 		pos++;
 	}
 
+}
+//displays state of muffin line
+void displayMuffinLine(deque<Customer>& muffinLine) {
+	cout << "Current muffin line: " << endl;
+	if (muffinLine.empty()) {
+		cout << "Muffin line is empty." << endl;
+		return;
+	}
+
+	while (current != nullptr) {
+		cout << pos << ". " << current->c.name << ": " << current->c.order << endl;
+		current = current->next;
+		pos++;
+	}
 }
 
 
@@ -137,7 +181,7 @@ bool serveCustomer(CoffeeLine& line, Customer& servedCustomer) {
 
 	return true;
 }
-void simCoffee(CoffeeLine& coffeeLine, string names[], string orders[]) {
+void simMarket(CoffeeLine& coffeeLine, string names[], string orders[]) {
 	cout << "Market Opens" << endl;
 	displayCoffeeLine(coffeeLine);
 
