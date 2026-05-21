@@ -28,8 +28,8 @@ struct CoffeeLine { //struct for linked list for coffee booth
 Customer newCustomer(string[], string[]);
 void addCustomer(CoffeeLine&, Customer);
 void displayCoffeeLine(CoffeeLine&);
+bool serveCustomer(CoffeeLine&, Customer&);
 void simCoffee(CoffeeLine&);
-void serveCustomer(CoffeeLine&, Customer&);
 
 
 int main()
@@ -121,10 +121,31 @@ void displayCoffeeLine(CoffeeLine& coffeeLine) {
 }
 
 
+bool serveCustomer(CoffeeLine& line, Customer& servedCustomer) {
+	if (line.head == nullptr) {
+		return false;
+	}
+	Node* temp = line.head;
+	servedCustomer = temp->c;
+	line.head = line.head->next;
+
+	if (line.head == nullptr) {
+		line.tail = nullptr;
+	}
+	delete temp;
+	line.count--;
+
+	return true;
+}
 void simCoffee(CoffeeLine&) {
+	cout << "Market Opens" << endl;
 
+	//copied loop structure and formatting from my SDLC asignment
+	for (int i = 1; i <= PERIODS; i++) {
+		cout << endl << "------------------------" << endl;
+		cout << "Time Period: " << i << endl;
+		cout << "------------------------" << endl;
+	}
 }
 
-void serveCustomer(CoffeeLine&, Customer&) {
 
-}
