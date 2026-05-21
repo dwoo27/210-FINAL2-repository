@@ -43,7 +43,7 @@ bool serveCustomer(deque<Customer>&, Customer&);
 bool serveCustomer(vector<Customer>&, Customer&);//bracelets
 bool serveCustomer(queue<Customer>&, Customer&);//stickers
 
-void simMarket(CoffeeLine&, deque<Customer>&, vector<Customer>&, queue<Customer>&,
+void simMarket(CoffeeLine&, deque<Customer>&, vector<Customer>&, queue<Customer>,
 	string[], string[], string[], string[], string[]);
 
 
@@ -86,7 +86,11 @@ int main()
 	};
 
 	string stickers[DATA]{
-
+	"Cat", "Dog", "Sun", "Moon", "Dragon",
+	"Flower", "Rocket", "Coffee", "Muffin", "Heart",
+	"Star", "Rainbow", "Laptop", "WaterBottle", "Book",
+	"Butterfly", "Pizza", "Ghost", "Alien", "Planet",
+	"Cloud", "Lightning", "Frog", "Dinosaur", "MusicNote"
 	};
 	
 	//ceate new coffeeLine and initialize values to default
@@ -120,6 +124,13 @@ int main()
 	for (int i = 0; i < 3; i++) {
 		addCustomer(braceletLine, newCustomer(names, bracelets));
 	}
+
+	//Milsetone 5
+
+	for (int i = 0; i < 3; i++) {
+		addCustomer(stickerLine, newCustomer(names, stickers));
+	}
+
 
 	simMarket(coffeeLine, muffinLine, braceletLine, stickerLine, names, drinks, muffins, bracelets, stickers);
 
@@ -164,14 +175,11 @@ void addCustomer(deque<Customer>& muffinLine, Customer c) {
 void addCustomer(vector<Customer>& braceletLine, Customer c) {
 	braceletLine.push_back(c);
 }
-//adds customers to muffinLine
-void addCustomer(deque<Customer>& muffinLine, Customer c) {
-	muffinLine.push_back(c);
-}
 
-//adds customers to braceletLine
-void addCustomer(vector<Customer>& braceletLine, Customer c) {
-	braceletLine.push_back(c);
+
+//adds customers to stickerLine
+void addCustomer(queue<Customer>& stickerLine, Customer c) {
+	stickerLine.push(c);
 }
 
 
@@ -284,13 +292,13 @@ bool serveCustomer(vector<Customer>& braceletLine, Customer& servedCustomer) {
 }
 
 //serves first customer in sticker line 
-bool serveCustomer(vector<Customer>& stickerLine, Customer& servedCustomer) {
+bool serveCustomer(queue<Customer>& stickerLine, Customer& servedCustomer) {
 	if (stickerLine.empty()) {
 		return false;
 	}
 
 	servedCustomer = stickerLine.front();
-	stickerLine.pop_back();
+	stickerLine.pop();
 
 	return true;
 }
