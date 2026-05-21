@@ -3,6 +3,7 @@
 #include <deque> //ds for muffins
 #include <vector> //ds for bracelets
 #include <queue> //ds for stickers
+#include <ctime>
 using namespace std;
 
 const int PERIODS = 10;
@@ -25,10 +26,14 @@ struct CoffeeLine { //struct for linked list for coffee booth
 };
 
 Customer newCustomer(string[], string[]);
-void addCustomer(CoffeeLine, Customer);
+void addCustomer(CoffeeLine&, Customer);
+void displayCoffeeLine(CoffeeLine&);
 
 int main()
 {
+	//Milestone 1
+	srand(time(0));
+
 	//data generated using LLM
 	string names[DATA] = {
 	"Alex", "Jordan", "Taylor", "Morgan", "Casey",
@@ -53,6 +58,14 @@ int main()
 	coffeeLine.count = 0;
 
 
+	//Milestone 2
+	//initialize and add 3 customers to coffeeLine
+	for (int i = 0; i < 3; i++) {
+		addCustomer(coffeeLine, newCustomer(names, drinks));
+	}
+
+	displayCoffeeLine(coffeeLine);
+
 
 
 
@@ -68,7 +81,7 @@ Customer newCustomer(string names[], string orders[]) {
 	return newCustomer;
 }
 //adds customers to coffeeLine
-void addCustomer(CoffeeLine coffeeLine, Customer c) {
+void addCustomer(CoffeeLine& coffeeLine, Customer c) {
 	Node* node = new Node;
 
 	node->c = c;
@@ -83,5 +96,23 @@ void addCustomer(CoffeeLine coffeeLine, Customer c) {
 	}
 
 	coffeeLine.count++;
+}
+
+void displayCoffeeLine(CoffeeLine& coffeeLine) {
+	Node* current = coffeeLine.head;
+	int pos = 1;
+
+	cout << "Current coffee line: " << endl;
+	if (current == nullptr) {
+		cout << "Coffee line is empty." << endl;
+		return;
+	}
+
+	while (current != nullptr) {
+		cout << pos << ". " << current->c.name << ": " << current->c.order << endl;
+		current = current->next;
+		pos++;
+	}
+
 }
 
